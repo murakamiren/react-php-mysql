@@ -1,3 +1,4 @@
+import { Box, Button, Center, Heading, HStack, Text } from "@chakra-ui/react";
 import { useState, VFC } from "react";
 import { testDataType } from "../types/testDataType";
 
@@ -15,24 +16,26 @@ const App: VFC = () => {
 
 	return (
 		<div>
-			<header>
-				<p>Hello Vite + React + TypeScript + php + Mysql</p>
-				<p>
-					<button type="button" onClick={fetchData}>
+			<Box px={4}>
+				<Heading as="h1">Hello Vite + React + TypeScript + php + Mysql</Heading>
+				<Text>
+					<Button type="button" onClick={fetchData} colorScheme="facebook">
 						fetch data
-					</button>
-				</p>
+					</Button>
+				</Text>
 
-				<p>result</p>
+				<Heading as="h2">result</Heading>
 				{data.map((d) => (
-					<div key={d.id}>
-						<p>{d.id}</p>
-						<p>{d.name}</p>
-						<p>{d.age}</p>
-						<p>{d.create_at}</p>
-					</div>
+					<Box key={d.id}>
+						<HStack spacing={4}>
+							<Text>id: {d.id}</Text>
+							<Text>name: {d.name}</Text>
+							<Text>age: {d.age}</Text>
+							<Text>create at: {d.create_at}</Text>
+						</HStack>
+					</Box>
 				))}
-			</header>
+			</Box>
 		</div>
 	);
 };

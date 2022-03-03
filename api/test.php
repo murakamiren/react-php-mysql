@@ -1,12 +1,8 @@
 <?php
-    header('Access-Control-Allow-Origin: *');
-
-    $dsn = "mysql:host=mysql;dbname=react-php;charset=utf8";
-    $user = "root";
-    $ps = "pass";
+    require_once("./config/config.php");
 
     try {
-        $pdo = new PDO($dsn, $user, $ps);
+        $pdo = new PDO(dsn, user, ps);
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
         $sql = "SELECT * FROM users";
