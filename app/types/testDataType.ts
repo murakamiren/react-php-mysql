@@ -4,3 +4,8 @@ export type testDataType = {
 	age: number;
 	create_at: number;
 };
+
+export type postDataType = {
+	name: string;
+	age: number;
+};
