@@ -1,13 +1,22 @@
 import {
 	Box,
 	Button,
+	Center,
 	FormControl,
 	FormHelperText,
 	FormLabel,
 	Heading,
 	HStack,
 	Input,
+	Table,
+	TableCaption,
+	Tbody,
+	Td,
 	Text,
+	Th,
+	Thead,
+	Tr,
+	useToast,
 	VStack,
 } from "@chakra-ui/react";
 import { useRef, useState, VFC } from "react";
@@ -16,6 +25,7 @@ import { testDataType } from "../types/testDataType";
 const App: VFC = () => {
 	const [data, setData] = useState<testDataType[]>([]);
 	const [isSuccess, setIsSuccess] = useState<boolean>();
+	const toast = useToast();
 	const name = useRef<HTMLInputElement>(null);
 	const age = useRef<HTMLInputElement>(null);
 
@@ -35,6 +45,15 @@ const App: VFC = () => {
 				console.log(text);
 				if (text === "") {
 					setIsSuccess(true);
+					toast({
+						title: "テータ登録",
+						description: "データの登録に成功しました",
+						status: "success",
+						duration: 3000,
+						isClosable: true,
+					});
+					name.current.value = "";
+					age.current.value = "";
 				} else {
 					setIsSuccess(false);
 				}
@@ -54,24 +73,44 @@ const App: VFC = () => {
 	return (
 		<div>
 			<Box px={4}>
-				<Heading as="h1">Hello Vite + React + TypeScript + php + Mysql</Heading>
+				<Center mb={8}>
+					<Heading as="h1" fontSize="2xl">
+						Hello Vite + React + TypeScript + php + Mysql
+					</Heading>
+				</Center>
 				<Text>
 					<Button type="button" onClick={fetchData} colorScheme="facebook">
 						fetch data
 					</Button>
 				</Text>
-				<Heading as="h2">result</Heading>
-				{data.map((d) => (
-					<Box key={d.id}>
-						<HStack spacing={4}>
-							<Text>id: {d.id}</Text>
-							<Text>name: {d.name}</Text>
-							<Text>age: {d.age}</Text>
-							<Text>create at: {d.create_at}</Text>
-						</HStack>
-					</Box>
-				))}
-				<Box w="70%" mt={24}>
+				<Heading as="h2" fontSize="xl">
+					result
+				</Heading>
+				<Table variant="simple">
+					<TableCaption>users</TableCaption>
+					<Thead>
+						<Tr>
+							<Th>id</Th>
+							<Th>名前</Th>
+							<Th>年齢</Th>
+							<Th>作成日</Th>
+						</Tr>
+					</Thead>
+					<Tbody>
+						{data.map((d) => (
+							<Tr key={d.id}>
+								<Td>{d.id}</Td>
+								<Td>{d.name}</Td>
+								<Td>{d.age}歳</Td>
+								<Td>{d.create_at}</Td>
+							</Tr>
+						))}
+					</Tbody>
+				</Table>
+				<Box w="70%" mt={8}>
+					<Heading as="h2" fontSize="xl" mb={4}>
+						データ登録
+					</Heading>
 					<VStack justify="start" spacing={4}>
 						<FormControl>
 							<FormLabel htmlFor="name">name</FormLabel>
@@ -84,7 +123,7 @@ const App: VFC = () => {
 							<FormHelperText>what`s your age?</FormHelperText>
 						</FormControl>
 						<Button onClick={submitData}>submit</Button>
-						{isSuccess && <Text>データ登録成功しました！</Text>}
+						{/* {isSuccess && <Text>データ登録成功しました！</Text>} */}
 					</VStack>
 				</Box>
 			</Box>
