@@ -137,7 +137,6 @@ const App: VFC = () => {
 						<Button onClick={submitData} isLoading={isLoad} colorScheme="messenger">
 							submit
 						</Button>
-						{/* {isSuccess && <Text>データ登録成功しました！</Text>} */}
 					</VStack>
 				</Box>
 			</Box>
