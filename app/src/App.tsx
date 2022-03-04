@@ -106,7 +106,7 @@ const App: VFC = () => {
 					result
 				</Heading>
 				<Table variant="simple">
-					<TableCaption>users</TableCaption>
+					<TableCaption>users data</TableCaption>
 					<Thead>
 						<Tr>
 							<Th>id</Th>
@@ -115,28 +115,32 @@ const App: VFC = () => {
 							<Th>作成日</Th>
 						</Tr>
 					</Thead>
-					{data.map((d) => (
-						<DataTable key={d.id} data={d} setIsSuccess={setIsSuccess} />
-					))}
+					{data
+						.filter((d) => d.is_active === 1)
+						.map((usr) => (
+							<DataTable key={usr.id} data={usr} setIsSuccess={setIsSuccess} />
+						))}
 				</Table>
-				<Box w="70%" mt={8}>
-					<Heading as="h2" fontSize="xl" mb={4}>
-						データ登録
-					</Heading>
-					<VStack justify="start" spacing={4}>
-						<FormControl>
-							<FormLabel htmlFor="name">name</FormLabel>
-							<Input id="name" type="text" ref={name} placeholder="ex: 藤江諒" required />
-							<FormHelperText>this name will be display name</FormHelperText>
-						</FormControl>
-						<FormControl>
-							<FormLabel htmlFor="name">age</FormLabel>
-							<Input id="age" type="number" ref={age} placeholder="ex: 20" required />
-							<FormHelperText>what`s your age?</FormHelperText>
-						</FormControl>
-						<Button onClick={submitData} isLoading={isLoad} colorScheme="messenger">
-							submit
-						</Button>
+				<Box w="full" mt={12}>
+					<VStack spacing={2} w="full">
+						<Heading as="h2" fontSize="xl" mb={4}>
+							データ登録
+						</Heading>
+						<VStack justify="start" spacing={4} w="70%">
+							<FormControl>
+								<FormLabel htmlFor="name">name</FormLabel>
+								<Input id="name" type="text" ref={name} placeholder="ex: 藤江諒" required />
+								<FormHelperText>this name will be display name</FormHelperText>
+							</FormControl>
+							<FormControl>
+								<FormLabel htmlFor="name">age</FormLabel>
+								<Input id="age" type="number" ref={age} placeholder="ex: 20" required />
+								<FormHelperText>what`s your age?</FormHelperText>
+							</FormControl>
+							<Button onClick={submitData} isLoading={isLoad} colorScheme="messenger">
+								submit
+							</Button>
+						</VStack>
 					</VStack>
 				</Box>
 			</Box>

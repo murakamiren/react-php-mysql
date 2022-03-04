@@ -3,6 +3,7 @@ export type testDataType = {
 	name: string;
 	age: number;
 	create_at: number;
+	is_active: 0 | 1;
 };
 
 export type postDataType = {
