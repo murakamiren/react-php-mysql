@@ -6,25 +6,24 @@ import {
 	FormHelperText,
 	FormLabel,
 	Heading,
-	HStack,
 	Input,
 	Table,
 	TableCaption,
-	Tbody,
-	Td,
 	Text,
 	Th,
 	Thead,
 	Tr,
+	useDisclosure,
 	useToast,
 	VStack,
 } from "@chakra-ui/react";
 import { useCallback, useEffect, useRef, useState, VFC } from "react";
 import { testDataType } from "../types/testDataType";
+import DataTable from "../components/table";
 
 const App: VFC = () => {
 	const [data, setData] = useState<testDataType[]>([]);
-	const [isSuccess, setIsSuccess] = useState<boolean>();
+	const [isSuccess, setIsSuccess] = useState<boolean>(false);
 	const [isLoad, setIsLoad] = useState<boolean>(false);
 	const toast = useToast();
 	const name = useRef<HTMLInputElement>(null);
@@ -34,6 +33,7 @@ const App: VFC = () => {
 		if (name.current !== null && age.current !== null) {
 			if (name.current.value !== "" && age.current.value !== "") {
 				// const ageToNum = Number(age.current.value);
+				setIsSuccess(false);
 				setIsLoad(true);
 				const inputData = new FormData();
 				inputData.set("name", name.current.value);
@@ -99,7 +99,7 @@ const App: VFC = () => {
 					</Heading>
 				</Center>
 				<Text>
-					<Button type="button" onClick={fetchDataCallback} colorScheme="facebook">
+					<Button type="button" onClick={fetchDataCallback} colorScheme="messenger">
 						fetch data
 					</Button>
 				</Text>
@@ -116,16 +116,9 @@ const App: VFC = () => {
 							<Th>作成日</Th>
 						</Tr>
 					</Thead>
-					<Tbody>
-						{data.map((d) => (
-							<Tr key={d.id}>
-								<Td>{d.id}</Td>
-								<Td>{d.name}</Td>
-								<Td>{d.age}歳</Td>
-								<Td>{d.create_at}</Td>
-							</Tr>
-						))}
-					</Tbody>
+					{data.map((d) => (
+						<DataTable key={d.id} data={d} setIsSuccess={setIsSuccess} />
+					))}
 				</Table>
 				<Box w="70%" mt={8}>
 					<Heading as="h2" fontSize="xl" mb={4}>
