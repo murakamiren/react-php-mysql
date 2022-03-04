@@ -15,6 +15,7 @@ import {
 	Tr,
 	useToast,
 	VStack,
+	Switch,
 } from "@chakra-ui/react";
 import { useCallback, useEffect, useRef, useState, VFC } from "react";
 import { testDataType } from "../types/testDataType";
@@ -27,6 +28,8 @@ const App: VFC = () => {
 	const toast = useToast();
 	const name = useRef<HTMLInputElement>(null);
 	const age = useRef<HTMLInputElement>(null);
+	const [isShowDelUser, setIsShowDelUser] = useState<boolean>(false);
+	const [filterNum, setFilterNum] = useState<0 | 1>(1);
 
 	const submitData = async () => {
 		if (name.current !== null && age.current !== null) {
@@ -89,6 +92,10 @@ const App: VFC = () => {
 		}
 	}, [isSuccess]);
 
+	useEffect(() => {
+		isShowDelUser ? setFilterNum(0) : setFilterNum(1);
+	}, [isShowDelUser]);
+
 	return (
 		<div>
 			<Box px={4}>
@@ -101,6 +108,10 @@ const App: VFC = () => {
 					<Button type="button" onClick={fetchDataCallback} colorScheme="messenger">
 						fetch data
 					</Button>
+				</Text>
+				<Text>
+					削除されたユーザーも表示する
+					<Switch onChange={() => setIsShowDelUser(!isShowDelUser)} ml={4} />
 				</Text>
 				<Heading as="h2" fontSize="xl">
 					result
@@ -116,7 +127,7 @@ const App: VFC = () => {
 						</Tr>
 					</Thead>
 					{data
-						.filter((d) => d.is_active === 1)
+						.filter((d) => d.is_active === 1 || d.is_active === filterNum)
 						.map((usr) => (
 							<DataTable key={usr.id} data={usr} setIsSuccess={setIsSuccess} />
 						))}
