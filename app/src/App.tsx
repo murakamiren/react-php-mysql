@@ -19,7 +19,7 @@ import {
 	useToast,
 	VStack,
 } from "@chakra-ui/react";
-import { useRef, useState, VFC } from "react";
+import { useCallback, useEffect, useRef, useState, VFC } from "react";
 import { testDataType } from "../types/testDataType";
 
 const App: VFC = () => {
@@ -72,14 +72,23 @@ const App: VFC = () => {
 		}
 	};
 
-	const fetchData = async () => {
+	const fetchDataCallback = useCallback(async () => {
 		const res = await fetch("http://localhost:5000/test.php");
 		console.log(res);
 		const json = await res.json();
 		setData(json);
 
 		console.log(json);
-	};
+	}, [data]);
+
+	useEffect(() => {
+		if (isSuccess) {
+			fetchDataCallback();
+			console.log("get data");
+		} else {
+			//do nothing
+		}
+	}, [isSuccess]);
 
 	return (
 		<div>
@@ -90,7 +99,7 @@ const App: VFC = () => {
 					</Heading>
 				</Center>
 				<Text>
-					<Button type="button" onClick={fetchData} colorScheme="facebook">
+					<Button type="button" onClick={fetchDataCallback} colorScheme="facebook">
 						fetch data
 					</Button>
 				</Text>
