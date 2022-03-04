@@ -19,7 +19,7 @@ import {
 } from "@chakra-ui/react";
 import { useCallback, useEffect, useRef, useState, VFC } from "react";
 import { testDataType } from "../types/testDataType";
-import DataTable from "../components/table";
+import DataTable from "./components/table";
 
 const App: VFC = () => {
 	const [data, setData] = useState<testDataType[]>([]);

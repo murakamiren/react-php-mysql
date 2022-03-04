@@ -15,7 +15,7 @@ import {
 	useToast,
 } from "@chakra-ui/react";
 import { Dispatch, SetStateAction, useRef, useState, VFC } from "react";
-import { testDataType } from "../types/testDataType";
+import { testDataType } from "../../types/testDataType";
 
 type editModalProps = {
 	isOpen: boolean;
