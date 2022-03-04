@@ -25,6 +25,7 @@ import { testDataType } from "../types/testDataType";
 const App: VFC = () => {
 	const [data, setData] = useState<testDataType[]>([]);
 	const [isSuccess, setIsSuccess] = useState<boolean>();
+	const [isLoad, setIsLoad] = useState<boolean>(false);
 	const toast = useToast();
 	const name = useRef<HTMLInputElement>(null);
 	const age = useRef<HTMLInputElement>(null);
@@ -33,6 +34,7 @@ const App: VFC = () => {
 		if (name.current !== null && age.current !== null) {
 			if (name.current.value !== "" && age.current.value !== "") {
 				// const ageToNum = Number(age.current.value);
+				setIsLoad(true);
 				const inputData = new FormData();
 				inputData.set("name", name.current.value);
 				inputData.set("age", age.current.value);
@@ -44,6 +46,7 @@ const App: VFC = () => {
 				const text = await res.text();
 				console.log(text);
 				if (text === "") {
+					setIsLoad(false);
 					setIsSuccess(true);
 					toast({
 						title: "テータ登録",
@@ -55,7 +58,15 @@ const App: VFC = () => {
 					name.current.value = "";
 					age.current.value = "";
 				} else {
+					setIsLoad(false);
 					setIsSuccess(false);
+					toast({
+						title: "エラー",
+						description: "データの登録に失敗しました",
+						status: "error",
+						duration: 3000,
+						isClosable: true,
+					});
 				}
 			}
 		}
@@ -122,7 +133,9 @@ const App: VFC = () => {
 							<Input id="age" type="number" ref={age} placeholder="ex: 20" required />
 							<FormHelperText>what`s your age?</FormHelperText>
 						</FormControl>
-						<Button onClick={submitData}>submit</Button>
+						<Button onClick={submitData} isLoading={isLoad}>
+							submit
+						</Button>
 						{/* {isSuccess && <Text>データ登録成功しました！</Text>} */}
 					</VStack>
 				</Box>
