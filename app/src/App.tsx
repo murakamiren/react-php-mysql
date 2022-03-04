@@ -13,7 +13,6 @@ import {
 	Th,
 	Thead,
 	Tr,
-	useDisclosure,
 	useToast,
 	VStack,
 } from "@chakra-ui/react";
@@ -135,7 +134,7 @@ const App: VFC = () => {
 							<Input id="age" type="number" ref={age} placeholder="ex: 20" required />
 							<FormHelperText>what`s your age?</FormHelperText>
 						</FormControl>
-						<Button onClick={submitData} isLoading={isLoad}>
+						<Button onClick={submitData} isLoading={isLoad} colorScheme="messenger">
 							submit
 						</Button>
 						{/* {isSuccess && <Text>データ登録成功しました！</Text>} */}

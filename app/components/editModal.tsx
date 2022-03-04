@@ -12,8 +12,9 @@ import {
 	FormHelperText,
 	Button,
 	ModalFooter,
+	useToast,
 } from "@chakra-ui/react";
-import { Dispatch, SetStateAction, useRef, VFC } from "react";
+import { Dispatch, SetStateAction, useRef, useState, VFC } from "react";
 import { testDataType } from "../types/testDataType";
 
 type editModalProps = {
@@ -26,27 +27,40 @@ type editModalProps = {
 const EditModal: VFC<editModalProps> = (props) => {
 	const selectedName = useRef<HTMLInputElement>(null);
 	const selectedAge = useRef<HTMLInputElement>(null);
+	const [isLoad, setIsLoad] = useState<boolean>(false);
+	const toast = useToast();
 
 	const handleUpdate = async () => {
 		if (selectedName.current && selectedAge.current) {
-			props.setIsSuccess(false);
-			const updateData = new FormData();
-			updateData.set("name", selectedName.current.value);
-			updateData.set("age", selectedAge.current.value);
-			updateData.set("id", props.selectedData.id.toString());
+			if (selectedName.current.value !== "" && selectedAge.current.value !== "") {
+				setIsLoad(true);
+				props.setIsSuccess(false);
+				const updateData = new FormData();
+				updateData.set("name", selectedName.current.value);
+				updateData.set("age", selectedAge.current.value);
+				updateData.set("id", props.selectedData.id.toString());
 
-			const params = {
-				method: "POST",
-				body: updateData,
-			};
+				const params = {
+					method: "POST",
+					body: updateData,
+				};
 
-			const res = await fetch("http://localhost:5000/update_users.php", params);
-			const text = await res.text();
+				const res = await fetch("http://localhost:5000/update_users.php", params);
+				const text = await res.text();
 
-			console.log(text);
-			if (text === "") {
-				props.onClose();
-				props.setIsSuccess(true);
+				console.log(text);
+				if (text === "") {
+					props.onClose();
+					props.setIsSuccess(true);
+					setIsLoad(false);
+					toast({
+						title: "データ変更",
+						description: "データの変更に成功しました",
+						status: "success",
+						duration: 3000,
+						isClosable: true,
+					});
+				}
 			}
 		}
 	};
@@ -86,7 +100,7 @@ const EditModal: VFC<editModalProps> = (props) => {
 					</FormControl>
 				</ModalBody>
 				<ModalFooter>
-					<Button colorScheme="messenger" mr={3} onClick={handleUpdate}>
+					<Button colorScheme="messenger" mr={3} onClick={handleUpdate} isLoading={isLoad}>
 						変更する
 					</Button>
 					<Button colorScheme="blackAlpha" onClick={props.onClose}>
