@@ -114,7 +114,7 @@ const App: VFC = () => {
 					<Switch onChange={() => setIsShowDelUser(!isShowDelUser)} ml={4} />
 				</Text>
 				<Heading as="h2" fontSize="xl">
-					result
+					{isShowDelUser ? "ユーザーデータ(削除済みも含む)" : "ユーザーデータ一覧"}
 				</Heading>
 				<Table variant="simple">
 					<TableCaption>users data</TableCaption>
